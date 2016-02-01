@@ -1,0 +1,18 @@
+(load "./chap2/huffman.scm")
+
+(define (encode message tree)
+	(if (null? message)
+		'()
+		(append (encode-symbol (car message) tree)
+						(encode (cdr message) tree))))
+
+(define (encode-symbol symbol tree)
+	(define (encode-iter tree)
+		(if (leaf? tree)
+			'()
+			(if (memq symbol (symbols (left-branch tree)))
+				(cons 0 (encode-iter (left-branch tree)))
+				(cons 1 (encode-iter (right-branch tree))))))
+	(if (memq symbol (symbols tree))
+		(encode-iter tree)
+		(error "Not found symbol of " symbol)))

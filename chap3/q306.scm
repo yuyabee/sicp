@@ -1,0 +1,10 @@
+(define rand
+	(let ((random-value 0))
+		(define (reset new-value)
+			(set! random-value new-value) random-value)
+		(define (generate)
+			(set! random-value (rand-update random-value)) random-value)
+		(lambda (m)
+			(cond ((eq? m 'generate) (generate))
+						((eq? m 'reset) reset)
+						(else (error "Unknown arg -- RAND" m))))))
