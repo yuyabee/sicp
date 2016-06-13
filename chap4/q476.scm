@@ -1,105 +1,105 @@
 (load "./chap4/query-system.scm")
 
 (define (conjoin conjuncts frame-stream)
-	(if (empty-conjunction? conjuncts)
-		frame-stream
-		(merge-frame-streams
-			(qeval (first-conjunct conjuncts) frame-stream)
-			(conjoin (rest-conjuncts conjuncts) frame-stream))))
+  (if (empty-conjunction? conjuncts)
+    frame-stream
+    (merge-frame-streams
+      (qeval (first-conjunct conjuncts) frame-stream)
+      (conjoin (rest-conjuncts conjuncts) frame-stream))))
 
 (define (merge-frame-streams s1 s2)
-	(stream-flatmap (lambda (frame1)
-										(stream-filter
-											(lambda (frame) (not (equal? frame 'failed)))
-											(stream-map
-												(lambda (frame2)
-												 ;; bidings of each frame
-													(merge-frames frame1 frame2))
-												s2)))
-									s1))
+  (stream-flatmap (lambda (frame1)
+                    (stream-filter
+                      (lambda (frame) (not (equal? frame 'failed)))
+                      (stream-map
+                        (lambda (frame2)
+                          ;; bidings of each frame
+                          (merge-frames frame1 frame2))
+                        s2)))
+                  s1))
 
 (define (merge-frames f1 f2)
-	(if (null? f1)
-		f2
-		(let ((var (caar f1))
-					(val (cdar f1)))
-			(let ((extension (extend-if-possible var val f2)))
-			 (if (equal? extension 'failed)
-				'failed
-				(merge-frames (cdr f1) extension))))))
+  (if (null? f1)
+    f2
+    (let ((var (caar f1))
+          (val (cdar f1)))
+      (let ((extension (extend-if-possible var val f2)))
+        (if (equal? extension 'failed)
+          'failed
+          (merge-frames (cdr f1) extension))))))
 
 (define microshaft-data-base
-	'(
-		;; from section 4.4.1
-		(address (Bitdiddle Ben) (Slumerville (Ridge Road) 10))
-		(job (Bitdiddle Ben) (computer wizard))
-		(salary (Bitdiddle Ben) 60000)
+  '(
+    ;; from section 4.4.1
+    (address (Bitdiddle Ben) (Slumerville (Ridge Road) 10))
+    (job (Bitdiddle Ben) (computer wizard))
+    (salary (Bitdiddle Ben) 60000)
 
-		(address (Hacker Alyssa P) (Cambridge (Mass Ave) 78))
-		(job (Hacker Alyssa P) (computer programmer))
-		(salary (Hacker Alyssa P) 40000)
-		(supervisor (Hacker Alyssa P) (Bitdiddle Ben))
+    (address (Hacker Alyssa P) (Cambridge (Mass Ave) 78))
+    (job (Hacker Alyssa P) (computer programmer))
+    (salary (Hacker Alyssa P) 40000)
+    (supervisor (Hacker Alyssa P) (Bitdiddle Ben))
 
-		(address (Fect Cy D) (Cambridge (Ames Street) 3))
-		(job (Fect Cy D) (computer programmer))
-		(salary (Fect Cy D) 35000)
-		(supervisor (Fect Cy D) (Bitdiddle Ben))
+    (address (Fect Cy D) (Cambridge (Ames Street) 3))
+    (job (Fect Cy D) (computer programmer))
+    (salary (Fect Cy D) 35000)
+    (supervisor (Fect Cy D) (Bitdiddle Ben))
 
-		(address (Tweakit Lem E) (Boston (Bay State Road) 22))
-		(job (Tweakit Lem E) (computer technician))
-		(salary (Tweakit Lem E) 25000)
-		(supervisor (Tweakit Lem E) (Bitdiddle Ben))
+    (address (Tweakit Lem E) (Boston (Bay State Road) 22))
+    (job (Tweakit Lem E) (computer technician))
+    (salary (Tweakit Lem E) 25000)
+    (supervisor (Tweakit Lem E) (Bitdiddle Ben))
 
-		(address (Reasoner Louis) (Slumerville (Pine Tree Road) 80))
-		(job (Reasoner Louis) (computer programmer trainee))
-		(salary (Reasoner Louis) 30000)
-		(supervisor (Reasoner Louis) (Hacker Alyssa P))
+    (address (Reasoner Louis) (Slumerville (Pine Tree Road) 80))
+    (job (Reasoner Louis) (computer programmer trainee))
+    (salary (Reasoner Louis) 30000)
+    (supervisor (Reasoner Louis) (Hacker Alyssa P))
 
-		(supervisor (Bitdiddle Ben) (Warbucks Oliver))
+    (supervisor (Bitdiddle Ben) (Warbucks Oliver))
 
-		(address (Warbucks Oliver) (Swellesley (Top Heap Road)))
-		(job (Warbucks Oliver) (administration big wheel))
-		(salary (Warbucks Oliver) 150000)
+    (address (Warbucks Oliver) (Swellesley (Top Heap Road)))
+    (job (Warbucks Oliver) (administration big wheel))
+    (salary (Warbucks Oliver) 150000)
 
-		(address (Scrooge Eben) (Weston (Shady Lane) 10))
-		(job (Scrooge Eben) (accounting chief accountant))
-		(salary (Scrooge Eben) 75000)
-		(supervisor (Scrooge Eben) (Warbucks Oliver))
+    (address (Scrooge Eben) (Weston (Shady Lane) 10))
+    (job (Scrooge Eben) (accounting chief accountant))
+    (salary (Scrooge Eben) 75000)
+    (supervisor (Scrooge Eben) (Warbucks Oliver))
 
-		(address (Cratchet Robert) (Allston (N Harvard Street) 16))
-		(job (Cratchet Robert) (accounting scrivener))
-		(salary (Cratchet Robert) 18000)
-		(supervisor (Cratchet Robert) (Scrooge Eben))
+    (address (Cratchet Robert) (Allston (N Harvard Street) 16))
+    (job (Cratchet Robert) (accounting scrivener))
+    (salary (Cratchet Robert) 18000)
+    (supervisor (Cratchet Robert) (Scrooge Eben))
 
-		(address (Aull DeWitt) (Slumerville (Onion Square) 5))
-		(job (Aull DeWitt) (administration secretary))
-		(salary (Aull DeWitt) 25000)
-		(supervisor (Aull DeWitt) (Warbucks Oliver))
+    (address (Aull DeWitt) (Slumerville (Onion Square) 5))
+    (job (Aull DeWitt) (administration secretary))
+    (salary (Aull DeWitt) 25000)
+    (supervisor (Aull DeWitt) (Warbucks Oliver))
 
-		(can-do-job (computer wizard) (computer programmer))
-		(can-do-job (computer wizard) (computer technician))
+    (can-do-job (computer wizard) (computer programmer))
+    (can-do-job (computer wizard) (computer technician))
 
-		(can-do-job (computer programmer)
-								(computer programmer trainee))
+    (can-do-job (computer programmer)
+                (computer programmer trainee))
 
-		(can-do-job (administration secretary)
-								(administration big wheel))
+    (can-do-job (administration secretary)
+                (administration big wheel))
 
-		(rule (lives-near ?person-1 ?person-2)
-					(and (address ?person-1 (?town . ?rest-1))
-							 (address ?person-2 (?town . ?rest-2))
-							 (not (same ?person-1 ?person-2))))
+    (rule (lives-near ?person-1 ?person-2)
+          (and (address ?person-1 (?town . ?rest-1))
+               (address ?person-2 (?town . ?rest-2))
+               (not (same ?person-1 ?person-2))))
 
-		(rule (same ?x ?x))
+    (rule (same ?x ?x))
 
-		(rule (wheel ?person)
-					(and (supervisor ?middle-manager ?person)
-							 (supervisor ?x ?middle-manager)))
+    (rule (wheel ?person)
+          (and (supervisor ?middle-manager ?person)
+               (supervisor ?x ?middle-manager)))
 
-		(rule (outranked-by ?staff-person ?boss)
-					(or (supervisor ?staff-person ?boss)
-							(and (supervisor ?staff-person ?middle-manager)
-									 (outranked-by ?middle-manager ?boss))))
-		))
+    (rule (outranked-by ?staff-person ?boss)
+          (or (supervisor ?staff-person ?boss)
+              (and (supervisor ?staff-person ?middle-manager)
+                   (outranked-by ?middle-manager ?boss))))
+    ))
 
 (initialize-data-base microshaft-data-base)

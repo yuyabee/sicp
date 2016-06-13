@@ -8,10 +8,10 @@
 (define (do-bindings exp) (caddr exp))
 
 (define (do-variables bindings)
-	(map (lambda (b) (list (car b) (cadr b))) bindings))
+  (map (lambda (b) (list (car b) (cadr b))) bindings))
 
 (define (do-updates bindings)
-	(map (lambda (b) (caddr b)) bindings))
+  (map (lambda (b) (caddr b)) bindings))
 
 (define (do-predicate exp) (caaddr exp))
 
@@ -20,8 +20,8 @@
 (define (do-body exp) (cdddr exp))
 
 (define (do->named-let exp)
-	(list 'let 'loop (do-variables exp)
-				(make-if (do-predicate exp)
-								 (do-value exp)
-								 (sequence->exp (append (do-body exp)
-																				(list (cons 'loop (do-updates (do-bindings exp)))))))))
+  (list 'let 'loop (do-variables exp)
+        (make-if (do-predicate exp)
+                 (do-value exp)
+                 (sequence->exp (append (do-body exp)
+                                        (list (cons 'loop (do-updates (do-bindings exp)))))))))
