@@ -1,2 +1,2 @@
 (define (double f)
- (lambda (x) (f (f x))))
+  (lambda (x) (f (f x))))
