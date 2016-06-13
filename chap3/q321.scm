@@ -1,2 +1,2 @@
 (define (print-queue queue)
-	(front-ptr queue))
+  (front-ptr queue))

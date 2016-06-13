@@ -1,12 +1,12 @@
 (load "./chap3/restriction.scm")
 
 (define (averager a b c)
-	(let ((u (make-connector))
-				(x (make-connector)))
-		(adder a b u)
-		(multiplier c x u)
-		(constant 2 x)
-		'ok))
+  (let ((u (make-connector))
+        (x (make-connector)))
+    (adder a b u)
+    (multiplier c x u)
+    (constant 2 x)
+    'ok))
 
 (define A (make-connector))
 (define B (make-connector))
