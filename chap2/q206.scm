@@ -1,5 +1,5 @@
 (define (add-1 n)
-	(lambda (f) (lambda (x) (f ((n f) x)))))
+  (lambda (f) (lambda (x) (f ((n f) x)))))
 ; (((add-1 zero) (lambda (x) (+ x 1))) 0)
 
 (define zero (lambda (f) (lambda (x) x)))
@@ -13,7 +13,7 @@
 (define (inc x) (+ x 1))
 
 (define (to-s z)
- ((z inc) 0))
+  ((z inc) 0))
 
 (define (add a b)
- (lambda (f) (lambda (x) ((a f) ((b f) x)))))
+  (lambda (f) (lambda (x) ((a f) ((b f) x)))))
